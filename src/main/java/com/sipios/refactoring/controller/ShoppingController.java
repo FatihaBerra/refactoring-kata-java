@@ -16,7 +16,7 @@ import org.springframework.web.server.ResponseStatusException;
 @RequestMapping("/shopping")
 public class ShoppingController {
 
-    private Logger logger = LoggerFactory.getLogger(ShoppingController.class);
+    private Logger logger = LoggerFactory.getLogger(ShoppingControllerV2.class);
 
     @PostMapping
     public String getPrice(@RequestBody Body b) {
