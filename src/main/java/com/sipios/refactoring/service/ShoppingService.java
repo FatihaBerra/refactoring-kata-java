@@ -7,6 +7,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Collections;
+import java.util.List;
+
 @Service
 public class ShoppingService {
 
@@ -17,10 +20,10 @@ public class ShoppingService {
     @Autowired
     CustomerDiscountService customerDiscountService;
 
-    public String getPrice(GetPriceRequest priceRequest) {
+    public Double getPrice(GetPriceRequest priceRequest) {
 
-        if (priceRequest.getItems() == null) {
-            return "0";
+        if (priceRequest.getItems() == null || priceRequest.getItems().isEmpty()) {
+            return 0.0;
         }
 
         double discount = customerDiscountService.computeCustomerDiscount(priceRequest.getType());
@@ -33,6 +36,6 @@ public class ShoppingService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
 
-        return String.valueOf(price);
+        return price;
     }
 }

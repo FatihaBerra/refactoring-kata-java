@@ -1,15 +1,17 @@
 package com.sipios.refactoring.request;
 
 
+import com.sipios.refactoring.enums.CustomerType;
+
 import java.util.List;
 
 public class GetPriceRequest {
     private List<ItemRequest> items;
-    private String type;
+    private CustomerType type;
 
-    public GetPriceRequest(List<ItemRequest> items, String t) {
+    public GetPriceRequest(List<ItemRequest> items, CustomerType type) {
         this.items = items;
-        this.type = t;
+        this.type = type;
     }
 
     public GetPriceRequest() {}
@@ -22,11 +24,11 @@ public class GetPriceRequest {
         this.items = items;
     }
 
-    public String getType() {
+    public CustomerType getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(CustomerType type) {
         this.type = type;
     }
 }

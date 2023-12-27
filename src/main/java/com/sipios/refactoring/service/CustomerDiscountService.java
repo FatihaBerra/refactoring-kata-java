@@ -1,21 +1,26 @@
 package com.sipios.refactoring.service;
 
+import com.sipios.refactoring.enums.CustomerType;
 import org.springframework.stereotype.Service;
 
 @Service
 public class CustomerDiscountService {
-    public double computeCustomerDiscount(String type) {
 
-        if (type.equals("STANDARD_CUSTOMER")) {
-            return 1;
-        } else if (type.equals("PREMIUM_CUSTOMER")) {
-            return 0.9;
-        } else if (type.equals("PLATINUM_CUSTOMER")) {
-            return 0.5;
-        } else {
-            //throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+    final private double DEFAULT_DISCOUNT = 1;
+
+    final private double STANDARD_CUSTOMER_DISCOUNT = 1;
+    final private double PREMIUM_CUSTOMER_DISCOUNT = 0.9;
+    final private double PLATINUM_CUSTOMER_DISCOUNT = 0.5;
+
+    public double computeCustomerDiscount(CustomerType customerType) {
+        if (customerType.equals(CustomerType.STANDARD_CUSTOMER)) {
+            return STANDARD_CUSTOMER_DISCOUNT;
+        } else if (customerType.equals(CustomerType.PREMIUM_CUSTOMER)) {
+            return PREMIUM_CUSTOMER_DISCOUNT;
+        } else if (customerType.equals(CustomerType.PLATINUM_CUSTOMER)) {
+            return PLATINUM_CUSTOMER_DISCOUNT;
         }
-        // à retirer
-        return 1;
+
+        return DEFAULT_DISCOUNT;
     }
 }

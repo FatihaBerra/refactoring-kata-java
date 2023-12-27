@@ -1,6 +1,7 @@
 package com.sipios.refactoring.service;
 
 import com.sipios.refactoring.request.ItemRequest;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -36,7 +37,8 @@ public class PricingService {
     }
 
     public double computeTotalDiscountAmount(List<ItemRequest> items, double customerDiscount, boolean isSalesSeason) {
-        return items.stream().mapToDouble(item -> calculateItemPrice(item, customerDiscount, isSalesSeason)).sum();
+        return items.stream()
+            .mapToDouble(item -> calculateItemPrice(item, customerDiscount, isSalesSeason)).sum();
     }
 
     private double calculateItemPrice(ItemRequest item, double customerDiscount, boolean isSalesSeason) {
