@@ -1,8 +1,9 @@
 package com.sipios.refactoring.service;
 
-import com.sipios.refactoring.exception.PriceIsTooHighException;
 import com.sipios.refactoring.request.GetPriceRequest;
 import com.sipios.refactoring.request.ItemRequest;
+import com.sipios.refactoring.validation.CustomerPriceValidator;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -13,6 +14,10 @@ import java.util.TimeZone;
 
 @Service
 public class ShoppingService {
+
+    @Autowired
+    CustomerPriceValidator customerPriceValidator;
+
     public String getPrice(GetPriceRequest priceRequest) {
 
         if (priceRequest.getItems() == null) {
@@ -34,10 +39,13 @@ public class ShoppingService {
             price = computeTotalAmountForDiscountSeason(priceRequest.getItems(), discount);
         }
 
-        verifyPriceNotTooHighForCustomer(priceRequest.getType(), price);
+        try {
+            customerPriceValidator.verifyPriceNotTooHigh(priceRequest.getType(), price);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
 
         return String.valueOf(price);
-
     }
 
     private double computeTotalAmountForDiscountSeason(ItemRequest[] items, double discount) {
@@ -100,29 +108,5 @@ public class ShoppingService {
         }
         // à retirer
         return 0;
-    }
-
-    private void verifyPriceNotTooHighForCustomer(String type, double price) {
-        try {
-            if (type.equals("STANDARD_CUSTOMER")) {
-                if (price > 200) {
-                    throw new PriceIsTooHighException(price, "standard");
-                }
-            } else if (type.equals("PREMIUM_CUSTOMER")) {
-                if (price > 800) {
-                    throw new PriceIsTooHighException(price, "premium");
-                }
-            } else if (type.equals("PLATINUM_CUSTOMER")) {
-                if (price > 2000) {
-                    throw new PriceIsTooHighException(price, "platinum");
-                }
-            } else {
-                if (price > 200) {
-                    throw new PriceIsTooHighException(price, "standard");
-                }
-            }
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
-        }
     }
 }
