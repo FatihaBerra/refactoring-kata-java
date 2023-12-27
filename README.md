@@ -1,42 +1,30 @@
 # Refactoring Kata Test
 
-## Introduction
+## Solution
 
-We have a service that expose a route which give the amount a customer should pay given its cart
-and its type.
+Here are the steps I followed to solve this Kata :
 
-This route was created ages ago, and nobody really knows who coded it or how it really works.
-Nonetheless, as the business changes frequently, this class has already been modified many times,
-making it harder to understand at each step.
+1.Separate the code into multiple classes and layers (SoC , SRP)
 
-Today, once again, the PO wants to add some new stuff to it and add the management for young customers.
-But this class is already complex enough and just adding a new behaviour to it won't work this time.
+2.Ideally , i would had to start by covering all the code with integration tests before refactoring , but too many scenarios have discouraged me...
 
-Your mission, should you decide to accept it, is to **refactor `ShoppingController` to make it
-understandable by the next developer** and easy to change afterwards. Now is the time for you to
-show your exceptional skills and make this implementation better, extensible, and ready for future
-features.
+3.I removed the commented code (violate YAGNI) + meaningful naming + hard typing using enums
 
-Sadly for you, this route is called everywhere, and **you can't change its signature**.
+4.I adopted the same commit style as the initial commits (ex : refactor: message)
 
-This exercise **should not last longer than 1,5 hour** (but this can be too short to do it all and
-you can take longer if you want).
+5.A controller advice is used for exception handling
 
-You can run the example file to see the method in action.
+6.It's weired that PriceTooHighException triggers a BadRequest ! but this behaviour has been preserved so the contract
+is not broken.
 
-## Deliverables
-What do we expect from you:
-- the link of the git repository
-- several commits, with an explicit message each time
-- a file / message / email explaining your process and principles you've followed
+## Improvements left
 
-## Prerequisite
+1.Add unit tests/integration tests (i ran out of time :P , no TDD LoL )
 
-- Java 11
+2.The solution lacks a Domain/Model layer , a kind of Shopping & Item entities have to be used
+in the service layer + Mappers (using MapStruct maybe)
 
-## How to run the code
+3.For money calculation the BigDecimal should be used instead of Double (why not wrapping it inside a Money class ? )
 
-- You can start the application using maven: `./mvnw`. It will expose a route POST accessible at `http://localhost:8080/shopping
-- You can launch the tests with `./mvnw test`
-
-**Good luck!**
+4.Use lombok + add some logging
+...
