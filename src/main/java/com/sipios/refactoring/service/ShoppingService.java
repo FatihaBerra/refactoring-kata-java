@@ -1,5 +1,6 @@
 package com.sipios.refactoring.service;
 
+import com.sipios.refactoring.exception.PriceIsTooHighException;
 import com.sipios.refactoring.request.GetPriceRequest;
 import com.sipios.refactoring.request.ItemRequest;
 import org.springframework.http.HttpStatus;
@@ -27,12 +28,10 @@ public class ShoppingService {
 
         discount = computeCustomerDiscount(priceRequest.getType());
 
-        if (!isDiscountSeasonSummer(calendar) && !isDiscountSeasonWinter(calendar)) {
+        if (!isDiscountSummerSeason(calendar) && !isDiscountWinterSeason(calendar)) {
             price = computeTotalAmountForNormalSeason(priceRequest.getItems(), discount);
-
         } else {
             price = computeTotalAmountForDiscountSeason(priceRequest.getItems(), discount);
-
         }
 
         verifyPriceNotTooHighForCustomer(priceRequest.getType(), price);
@@ -75,13 +74,13 @@ public class ShoppingService {
         return price;
     }
 
-    private boolean isDiscountSeasonWinter(Calendar calendar) {
+    private boolean isDiscountWinterSeason(Calendar calendar) {
         return calendar.get(Calendar.DAY_OF_MONTH) < 15 &&
             calendar.get(Calendar.DAY_OF_MONTH) > 5 &&
             calendar.get(Calendar.MONTH) == 0;
     }
 
-    private boolean isDiscountSeasonSummer(Calendar calendar) {
+    private boolean isDiscountSummerSeason(Calendar calendar) {
         return
             calendar.get(Calendar.DAY_OF_MONTH) < 15 &&
                 calendar.get(Calendar.DAY_OF_MONTH) > 5 &&
@@ -107,19 +106,19 @@ public class ShoppingService {
         try {
             if (type.equals("STANDARD_CUSTOMER")) {
                 if (price > 200) {
-                    throw new Exception("Price (" + price + ") is too high for standard customer");
+                    throw new PriceIsTooHighException(price, "standard");
                 }
             } else if (type.equals("PREMIUM_CUSTOMER")) {
                 if (price > 800) {
-                    throw new Exception("Price (" + price + ") is too high for premium customer");
+                    throw new PriceIsTooHighException(price, "premium");
                 }
             } else if (type.equals("PLATINUM_CUSTOMER")) {
                 if (price > 2000) {
-                    throw new Exception("Price (" + price + ") is too high for platinum customer");
+                    throw new PriceIsTooHighException(price, "platinum");
                 }
             } else {
                 if (price > 200) {
-                    throw new Exception("Price (" + price + ") is too high for standard customer");
+                    throw new PriceIsTooHighException(price, "standard");
                 }
             }
         } catch (Exception e) {
