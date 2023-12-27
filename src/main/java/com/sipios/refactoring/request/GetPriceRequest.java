@@ -1,22 +1,24 @@
 package com.sipios.refactoring.request;
 
 
+import java.util.List;
+
 public class GetPriceRequest {
-    private ItemRequest[] items;
+    private List<ItemRequest> items;
     private String type;
 
-    public GetPriceRequest(ItemRequest[] is, String t) {
-        this.items = is;
+    public GetPriceRequest(List<ItemRequest> items, String t) {
+        this.items = items;
         this.type = t;
     }
 
     public GetPriceRequest() {}
 
-    public ItemRequest[] getItems() {
+    public List<ItemRequest> getItems() {
         return items;
     }
 
-    public void setItems(ItemRequest[] items) {
+    public void setItems(List<ItemRequest> items) {
         this.items = items;
     }
 
