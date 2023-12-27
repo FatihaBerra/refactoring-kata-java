@@ -36,11 +36,11 @@ public class PricingService {
         final double dressDiscount = isSalesSeason ? DRESS_DISCOUNT : 1;
         final double jacketDiscount = isSalesSeason ? JACKET_DISCOUNT : 1;
 
-        if (item.getType().equals(ItemType.TSHIRT)) {
+        if (ItemType.TSHIRT.equals(item.getType())) {
             return TSHIRT_PRICE * item.getNb() * customerDiscount;
-        } else if (item.getType().equals(ItemType.DRESS)) {
+        } else if (ItemType.DRESS.equals(item.getType())) {
             return DRESS_PRICE * item.getNb() * dressDiscount * customerDiscount;
-        } else if (item.getType().equals(ItemType.JACKET)) {
+        } else if (ItemType.JACKET.equals(item.getType())) {
             return JACKET_PRICE * item.getNb() * jacketDiscount * customerDiscount;
         }
 

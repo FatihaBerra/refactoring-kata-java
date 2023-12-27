@@ -16,10 +16,14 @@ public class CustomerPriceValidator {
     private final double PLATINUM_MAX_PRICE = 2000;
 
     public void verifyPriceNotTooHigh(CustomerType customerType, double price) {
-        if (customerType.equals(CustomerType.PREMIUM_CUSTOMER) && price > PREMUIM_MAX_PRICE) {
-            throw new PriceIsTooHighException(price, PREMUIM_CUSTOMER);
-        } else if (customerType.equals(CustomerType.PLATINUM_CUSTOMER) && price > PLATINUM_MAX_PRICE) {
-            throw new PriceIsTooHighException(price, PLATINUIM_CUSTOMER);
+        if (CustomerType.PREMIUM_CUSTOMER.equals(customerType)) {
+            if (price > PREMUIM_MAX_PRICE) {
+                throw new PriceIsTooHighException(price, PREMUIM_CUSTOMER);
+            }
+        } else if ((CustomerType.PLATINUM_CUSTOMER).equals(customerType)) {
+            if (price > PLATINUM_MAX_PRICE) {
+                throw new PriceIsTooHighException(price, PLATINUIM_CUSTOMER);
+            }
         } else if (price > STANDARD_MAX_PRICE) {
             throw new PriceIsTooHighException(price, STANDARD_CUSTOMER);
         }
