@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-@ControllerAdvice(basePackageClasses = ShoppingControllerV2.class)
+@ControllerAdvice(basePackageClasses = ShoppingController.class)
 public class ShoppingControllerAdvice {
     private static final Logger logger = LoggerFactory.getLogger(ShoppingControllerAdvice.class);
 

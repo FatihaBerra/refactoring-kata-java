@@ -12,7 +12,7 @@ public class CustomerDiscountService {
     final private double PREMIUM_CUSTOMER_DISCOUNT = 0.9;
     final private double PLATINUM_CUSTOMER_DISCOUNT = 0.5;
 
-    public double computeCustomerDiscount(CustomerType customerType) {
+    public double getCustomerDiscount(CustomerType customerType) {
         if (customerType.equals(CustomerType.STANDARD_CUSTOMER)) {
             return STANDARD_CUSTOMER_DISCOUNT;
         } else if (customerType.equals(CustomerType.PREMIUM_CUSTOMER)) {

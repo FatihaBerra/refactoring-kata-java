@@ -8,6 +8,9 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.List;
 
+import static com.sipios.refactoring.helper.SalesDateHelper.isSummerSalesSeason;
+import static com.sipios.refactoring.helper.SalesDateHelper.isWinterSalesSeason;
+
 @Service
 public class PricingService {
 
@@ -17,31 +20,21 @@ public class PricingService {
     final private double DRESS_DISCOUNT = 0.8;
     final private double JACKET_DISCOUNT = 0.9;
 
-    final private LocalDate NOW = LocalDate.now(ZoneId.of("Europe/Paris"));
-    final private LocalDate WINTER_SALES_START_DATE = LocalDate.of(NOW.getYear(), 1, 5);
-    final private LocalDate WINTER_SALES_END_DATE = LocalDate.of(NOW.getYear(), 1, 15);
-
-    final private LocalDate SUMMER_SALES_START_DATE = LocalDate.of(NOW.getYear(), 6, 5);
-
-    final private LocalDate SUMMER_SALES_END_DATE = LocalDate.of(NOW.getYear(), 6, 15);
-
-
     public double computeTotalPrice(List<ItemRequest> items, double discount) {
-        if (isDiscountSummerSeason() || isDiscountWinterSeason()) {
-            return computeTotalDiscountAmount(items, discount, true);
-        } else {
-            return computeTotalDiscountAmount(items, discount, false);
-        }
+        boolean isSalesSeason = isSummerSalesSeason() || isWinterSalesSeason();
+        return computeTotalDiscountAmount(items, discount, isSalesSeason);
     }
 
     public double computeTotalDiscountAmount(List<ItemRequest> items, double customerDiscount, boolean isSalesSeason) {
         return items.stream()
-            .mapToDouble(item -> calculateItemPrice(item, customerDiscount, isSalesSeason)).sum();
+            .mapToDouble(item -> computeItemPrice(item, customerDiscount, isSalesSeason)).sum();
     }
 
-    private double calculateItemPrice(ItemRequest item, double customerDiscount, boolean isSalesSeason) {
-        double dressDiscount = isSalesSeason ? DRESS_DISCOUNT : 1;
-        double jacketDiscount = isSalesSeason ? JACKET_DISCOUNT : 1;
+    private double computeItemPrice(ItemRequest item,
+                                    double customerDiscount,
+                                    boolean isSalesSeason) {
+        final double dressDiscount = isSalesSeason ? DRESS_DISCOUNT : 1;
+        final double jacketDiscount = isSalesSeason ? JACKET_DISCOUNT : 1;
 
         if (item.getType().equals(ItemType.TSHIRT)) {
             return TSHIRT_PRICE * item.getNb() * customerDiscount;
@@ -54,11 +47,4 @@ public class PricingService {
         return 0;
     }
 
-    private boolean isDiscountWinterSeason() {
-        return NOW.isAfter(WINTER_SALES_START_DATE) && NOW.isBefore(WINTER_SALES_END_DATE);
-    }
-
-    private boolean isDiscountSummerSeason() {
-        return NOW.isAfter(SUMMER_SALES_START_DATE) && NOW.isBefore(SUMMER_SALES_END_DATE);
-    }
 }
