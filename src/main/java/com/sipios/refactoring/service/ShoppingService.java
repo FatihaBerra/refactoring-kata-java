@@ -10,6 +10,8 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.Collections;
 import java.util.List;
 
+import static java.util.Objects.isNull;
+
 @Service
 public class ShoppingService {
 
@@ -22,7 +24,9 @@ public class ShoppingService {
 
     public Double getPrice(GetPriceRequest priceRequest) {
 
-        if (priceRequest.getItems() == null || priceRequest.getItems().isEmpty()) {
+        if (isNull(priceRequest)
+            || isNull(priceRequest.getItems())
+            || priceRequest.getItems().isEmpty()) {
             return 0.0;
         }
 

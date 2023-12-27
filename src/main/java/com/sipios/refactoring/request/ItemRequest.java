@@ -1,21 +1,23 @@
 package com.sipios.refactoring.request;
 
+import com.sipios.refactoring.enums.ItemType;
+
 public class ItemRequest {
-    private String type;
+    private ItemType type;
     private int nb;
 
     public ItemRequest() {}
 
-    public ItemRequest(String type, int quantity) {
+    public ItemRequest(ItemType type, int quantity) {
         this.type = type;
         this.nb = quantity;
     }
 
-    public String getType() {
+    public ItemType getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(ItemType type) {
         this.type = type;
     }
 
