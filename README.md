@@ -24,7 +24,9 @@ is not broken.
 2.The solution lacks a Domain/Model layer , a kind of Shopping & Item entities have to be used
 in the service layer + Mappers (using MapStruct maybe)
 
-3.For money calculation the BigDecimal should be used instead of Double (why not wrapping it inside a Money class ? )
+3.move the constants(discounts , sales dates , prices..) to an external configuration
 
-4.Use lombok + add some logging
+4.For money calculation the BigDecimal should be used instead of Double (why not wrapping it inside a Money class ? )
+
+5.Use lombok + add some logging
 ...
